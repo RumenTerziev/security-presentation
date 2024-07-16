@@ -9,9 +9,9 @@
 
 ## Implementation phases
 
-- Initial state - show spring security is secure by default <------ Current phase
+- Initial state - show spring security is secure by default 
 - Add controller with public and private endpoints  
-- Security filter chain
+- Security filter chain <------ Current phase
 - Basic auth
 - Add a custom header filter
 - Username / password authentication - form login
