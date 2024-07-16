@@ -1,0 +1,20 @@
+package bg.rumbata.security_presentation.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/cars")
+public class MobileController {
+
+    @GetMapping("/public")
+    public String getPublicCars() {
+        return "Public cars page!";
+    }
+
+    @GetMapping("/vip")
+    public String getVipCars() {
+        return "Vip cars page!";
+    }
+}
