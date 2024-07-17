@@ -12,8 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-
 public class MobileHeaderFilter extends OncePerRequestFilter {
 
     private static final String MOBILE_HEADER_NAME = "X-Mobile";
