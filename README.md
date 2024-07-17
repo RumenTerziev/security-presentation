@@ -14,7 +14,9 @@
 - Add controller with public and private endpoints
 - Security filter chain
 - Basic auth
-- Add a custom header filter <------ Current phase
+- Add a custom header filter 
+- Added another header filter with custom implementation <------ Current phase
+> filter -> manager -> provider -> service
 - Username / password authentication - form login
 - JWT
 
