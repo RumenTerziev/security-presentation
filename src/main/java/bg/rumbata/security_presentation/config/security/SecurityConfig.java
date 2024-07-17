@@ -1,0 +1,58 @@
+package bg.rumbata.security_presentation.config.security;
+
+import bg.rumbata.security_presentation.service.MobileUserDetailsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
+
+import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private static final String REQUEST_HEADER_NAME = "X-Requested-H";
+    private static final String REQUEST_HEADER_VALUE = "request-mobile";
+
+    private final MobileUserDetailsService userDetailsService;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .authorizeHttpRequests(security -> security
+                        .requestMatchers("/cars/public").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(getMobileHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(getRequestHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(withDefaults())
+                .build();
+    }
+
+    private MobileHeaderFilter getMobileHeaderFilter() {
+        return new MobileHeaderFilter();
+    }
+
+    private RequestHeaderAuthenticationFilter getRequestHeaderFilter() {
+        RequestHeaderAuthenticationFilter requestHeaderAuthenticationFilter = new RequestHeaderAuthenticationFilter();
+        requestHeaderAuthenticationFilter.setPrincipalRequestHeader(REQUEST_HEADER_NAME);
+        requestHeaderAuthenticationFilter.setCredentialsRequestHeader(REQUEST_HEADER_VALUE);
+        requestHeaderAuthenticationFilter.setExceptionIfHeaderMissing(false);
+        requestHeaderAuthenticationFilter.setAuthenticationManager(getAuthenticationManager());
+        return requestHeaderAuthenticationFilter;
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return new ProviderManager(Arrays.asList(new RequestHeaderProvider(userDetailsService)));
+    }
+}

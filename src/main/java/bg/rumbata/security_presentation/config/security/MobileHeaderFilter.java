@@ -26,7 +26,7 @@ public class MobileHeaderFilter extends OncePerRequestFilter {
         }
 
         String headerValue = request.getHeader(MOBILE_HEADER_NAME);
-        if (headerValue.isBlank() || !headerValue.equals(MOBILE_HEADER_VALUE)) {
+        if (headerValue == null || !headerValue.equals(MOBILE_HEADER_VALUE)) {
             filterChain.doFilter(request, response);
             return;
         }
