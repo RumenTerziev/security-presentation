@@ -17,4 +17,9 @@ public class MobileController {
     public String getVipCars() {
         return "Vip cars page!";
     }
+
+    @GetMapping("/vip/header")
+    public String getVipCarsHeaderAuth() {
+        return "Vip cars page with header auth!";
+    }
 }
