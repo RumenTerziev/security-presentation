@@ -65,4 +65,10 @@ public class FormLoginAuthentication implements Authentication {
     public String getName() {
         return principal.toString();
     }
+
+    @Override
+    public String toString() {
+        return "%s [Principal=%s, Credentials=[PROTECTED], Authenticated=%b, Granted Authorities=%s"
+                .formatted(getClass().getSimpleName(), principal, authenticated, authorities);
+    }
 }
