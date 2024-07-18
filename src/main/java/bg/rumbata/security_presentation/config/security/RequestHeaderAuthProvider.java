@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 @RequiredArgsConstructor
-public class RequestHeaderProvider extends PreAuthenticatedAuthenticationProvider {
+public class RequestHeaderAuthProvider extends PreAuthenticatedAuthenticationProvider {
 
     private final MobileUserDetailsService mobileUserDetailsService;
 

@@ -53,6 +53,6 @@ public class SecurityConfig {
     }
 
     public AuthenticationManager getAuthenticationManager() {
-        return new ProviderManager(Arrays.asList(new RequestHeaderProvider(userDetailsService)));
+        return new ProviderManager(Arrays.asList(new RequestHeaderAuthProvider(userDetailsService)));
     }
 }
