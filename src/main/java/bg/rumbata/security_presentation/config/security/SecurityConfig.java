@@ -1,5 +1,9 @@
 package bg.rumbata.security_presentation.config.security;
 
+import bg.rumbata.security_presentation.config.security.formauth.FormLoginAuthProvider;
+import bg.rumbata.security_presentation.config.security.headerauth.MobileHeaderFilter;
+import bg.rumbata.security_presentation.config.security.headerauth.RequestHeaderAuthProvider;
+import bg.rumbata.security_presentation.service.MobileFormUserDetailsService;
 import bg.rumbata.security_presentation.service.MobileUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
@@ -25,10 +30,12 @@ public class SecurityConfig {
     private static final String REQUEST_HEADER_VALUE = "request-mobile";
 
     private final MobileUserDetailsService userDetailsService;
+    private final MobileFormUserDetailsService mobileFormUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(security -> security
                         .requestMatchers("/cars/public").permitAll()
                         .anyRequest().authenticated()
@@ -36,7 +43,17 @@ public class SecurityConfig {
                 .addFilterBefore(getMobileHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(getRequestHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(withDefaults())
+                .formLogin(formLogin -> formLogin
+                        .defaultSuccessUrl("/cars/vip")
+                        .failureForwardUrl("/login?error=true"))
+                .authenticationManager(getAuthenticationManager())
                 .build();
+    }
+
+    @Bean
+    public AuthenticationManager getAuthenticationManager() {
+        return new ProviderManager(Arrays.asList(new RequestHeaderAuthProvider(userDetailsService),
+                new FormLoginAuthProvider(mobileFormUserDetailsService)));
     }
 
     private MobileHeaderFilter getMobileHeaderFilter() {
@@ -50,9 +67,5 @@ public class SecurityConfig {
         requestHeaderAuthenticationFilter.setExceptionIfHeaderMissing(false);
         requestHeaderAuthenticationFilter.setAuthenticationManager(getAuthenticationManager());
         return requestHeaderAuthenticationFilter;
-    }
-
-    public AuthenticationManager getAuthenticationManager() {
-        return new ProviderManager(Arrays.asList(new RequestHeaderAuthProvider(userDetailsService)));
     }
 }

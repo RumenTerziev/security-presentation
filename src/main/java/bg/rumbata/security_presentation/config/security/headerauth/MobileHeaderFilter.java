@@ -1,4 +1,4 @@
-package bg.rumbata.security_presentation.config.security;
+package bg.rumbata.security_presentation.config.security.headerauth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

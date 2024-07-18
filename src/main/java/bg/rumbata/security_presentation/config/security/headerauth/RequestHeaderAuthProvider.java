@@ -1,9 +1,9 @@
-package bg.rumbata.security_presentation.config.security;
+package bg.rumbata.security_presentation.config.security.headerauth;
 
-import bg.rumbata.security_presentation.service.MobileUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @RequiredArgsConstructor
 public class RequestHeaderAuthProvider extends PreAuthenticatedAuthenticationProvider {
 
-    private final MobileUserDetailsService mobileUserDetailsService;
+    private final AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> mobileUserDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
