@@ -20,7 +20,7 @@ public class MobileUserDetailsService implements AuthenticationUserDetailsServic
 
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
-        Optional<MobileUser> optionalMobileUser = userRepository.findByUsername(token.getPrincipal().toString());
+        Optional<MobileUser> optionalMobileUser = userRepository.findByUsername(token.getName());
         if (optionalMobileUser.isEmpty()) {
             throw new UsernameNotFoundException(token.getPrincipal().toString());
         }

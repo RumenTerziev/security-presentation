@@ -15,13 +15,12 @@ public class RequestHeaderProvider extends PreAuthenticatedAuthenticationProvide
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (!(authentication instanceof PreAuthenticatedAuthenticationToken)) {
+        if (!(authentication instanceof PreAuthenticatedAuthenticationToken token)) {
             return null;
         }
-        PreAuthenticatedAuthenticationToken token = (PreAuthenticatedAuthenticationToken) authentication;
         Object principal = token.getPrincipal();
         Object credentials = token.getCredentials();
         UserDetails userDetails = mobileUserDetailsService.loadUserDetails(token);
-        return new PreAuthenticatedAuthenticationToken(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
+        return new PreAuthenticatedAuthenticationToken(principal, credentials, userDetails.getAuthorities());
     }
 }
