@@ -15,11 +15,11 @@
 - Security filter chain
 - Basic auth
 - Add a custom header filter
-- Added another header filter with custom implementation <------ Current phase
+- Added another header filter with custom implementation
 
 > filter -> manager -> provider -> service
 
-- Username / password authentication - form login
+- Username / password authentication - form login <------ Current phase
 - JWT
 
 > Implementation phases are not final and could be changed
