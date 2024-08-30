@@ -22,4 +22,9 @@ public class MobileController {
     public String getVipCarsHeaderAuth() {
         return "Vip cars page with header auth!";
     }
+
+    @GetMapping("/vip/jwt")
+    public String getVipCarsJwtAuth() {
+        return "Vip cars page with jwt auth!";
+    }
 }

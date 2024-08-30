@@ -25,7 +25,7 @@ public class FormLoginAuthProvider implements AuthenticationProvider {
         if (!authRequest.getCredentials().toString().equals(userDetails.getPassword())) {
             throw new BadCredentialsException("Incorrect username or password!");
         }
-        return FormLoginAuthentication.authenticated(userDetails.getUsername(), userDetails.getAuthorities());
+        return FormLoginAuthentication.authenticated(userDetails.getUsername(), userDetails, userDetails.getAuthorities());
     }
 
     @Override

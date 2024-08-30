@@ -2,6 +2,7 @@ package bg.rumbata.security_presentation.config.security.formauth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -12,23 +13,26 @@ public class FormLoginAuthentication implements Authentication {
 
     private final Object credentials;
 
+    private final UserDetails userDetails;
+
     private final Collection<? extends GrantedAuthority> authorities;
 
     private final boolean authenticated;
 
-    private FormLoginAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    private FormLoginAuthentication(Object principal, Object credentials, UserDetails userDetails, Collection<? extends GrantedAuthority> authorities) {
         this.principal = principal;
         this.credentials = credentials;
+        this.userDetails = userDetails;
         this.authorities = authorities;
         this.authenticated = credentials == null;
     }
 
     public static FormLoginAuthentication unauthenticated(Object principal, Object credentials) {
-        return new FormLoginAuthentication(principal, credentials, Collections.emptyList());
+        return new FormLoginAuthentication(principal, credentials, null, Collections.emptyList());
     }
 
-    public static FormLoginAuthentication authenticated(Object principal, Collection<? extends GrantedAuthority> authorities) {
-        return new FormLoginAuthentication(principal, null, authorities);
+    public static FormLoginAuthentication authenticated(Object principal, UserDetails userDetails, Collection<? extends GrantedAuthority> authorities) {
+        return new FormLoginAuthentication(principal, null, userDetails, authorities);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class FormLoginAuthentication implements Authentication {
 
     @Override
     public Object getDetails() {
-        return null;
+        return userDetails;
     }
 
     @Override

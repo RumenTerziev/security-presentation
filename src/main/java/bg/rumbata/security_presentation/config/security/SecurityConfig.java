@@ -1,8 +1,11 @@
 package bg.rumbata.security_presentation.config.security;
 
 import bg.rumbata.security_presentation.config.security.formauth.FormLoginAuthProvider;
+import bg.rumbata.security_presentation.config.security.handler.LoginSuccessHandler;
 import bg.rumbata.security_presentation.config.security.headerauth.MobileHeaderFilter;
 import bg.rumbata.security_presentation.config.security.headerauth.RequestHeaderAuthProvider;
+import bg.rumbata.security_presentation.config.security.jwtauth.JwtAuthFilter;
+import bg.rumbata.security_presentation.service.JwtService;
 import bg.rumbata.security_presentation.service.MobileFormUserDetailsService;
 import bg.rumbata.security_presentation.service.MobileUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import org.springframework.security.web.authentication.preauth.RequestHeaderAuth
 import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +35,7 @@ public class SecurityConfig {
 
     private final MobileUserDetailsService userDetailsService;
     private final MobileFormUserDetailsService mobileFormUserDetailsService;
+    private final JwtService jwtService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -41,12 +46,15 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(getMobileHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(getRequestHeaderFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(getRequestHeaderFilter(), MobileHeaderFilter.class)
+                .addFilterBefore(new JwtAuthFilter(jwtService, mobileFormUserDetailsService), RequestHeaderAuthenticationFilter.class)
                 .httpBasic(withDefaults())
                 .formLogin(formLogin -> formLogin
                         .defaultSuccessUrl("/cars/vip")
-                        .failureForwardUrl("/login?error=true"))
+                        .failureForwardUrl("/login?error=true")
+                        .successHandler(new LoginSuccessHandler(jwtService)))
                 .authenticationManager(getAuthenticationManager())
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .build();
     }
 
