@@ -25,7 +25,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         log.info("Successfully logged in as {}", authentication.getName());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"username\": \"" + authentication.getName() + "\"},\n" +
-                                   "{\"token\": \"" + jwtService.generateTokenFromUsername((UserDetails) authentication.getDetails()) + "\"}");
+        response.getWriter().write("{\"username\": \"" + authentication.getName() + "\",\n" +
+                                   "\"token\": \"" + jwtService.generateTokenFromUsername((UserDetails) authentication.getDetails()) + "\"}");
     }
 }
