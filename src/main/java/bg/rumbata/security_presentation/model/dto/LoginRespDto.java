@@ -1,18 +1,13 @@
 package bg.rumbata.security_presentation.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.List;
 
-@Getter
-@AllArgsConstructor
-public class LoginRespDto {
+public record LoginRespDto(
 
-    private String username;
+        String username,
 
-    private String token;
+        String token,
 
-    private List<String> roles;
-
+        List<String> roles
+) {
 }
