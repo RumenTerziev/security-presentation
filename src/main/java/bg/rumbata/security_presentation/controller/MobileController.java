@@ -10,7 +10,7 @@ public class MobileController {
 
     @GetMapping("/public")
     public String getPublicCars() {
-        return "Public cars page!";
+        return "Public cars page! 😊😊😊";
     }
 
     @GetMapping("/vip")
@@ -23,8 +23,18 @@ public class MobileController {
         return "Vip cars page with header auth!";
     }
 
+    @GetMapping("/vip/req-header")
+    public String getVipCarsRequestHeaderAuth() {
+        return "Vip cars page with request header auth!";
+    }
+
     @GetMapping("/vip/jwt")
     public String getVipCarsJwtAuth() {
         return "Vip cars page with jwt auth!";
+    }
+
+    @GetMapping("/vip/oath")
+    public String getVipCarsOath() {
+        return "Vip cars page with oath2 auth! 😍";
     }
 }

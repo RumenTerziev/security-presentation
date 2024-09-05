@@ -19,12 +19,6 @@ public class MobileHeaderFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!request.getRequestURI().contains("/cars/vip/header")
-            || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String headerValue = request.getHeader(MOBILE_HEADER_NAME);
         if (headerValue == null || !headerValue.equals(MOBILE_HEADER_VALUE)) {
             filterChain.doFilter(request, response);
