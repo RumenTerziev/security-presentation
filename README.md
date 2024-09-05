@@ -7,6 +7,7 @@
 - Basic auth
 - Username / password auth
 - JWT auth
+- Oath2
 
 ## Implementation phases
 
@@ -19,7 +20,8 @@
 
 > filter -> manager -> provider -> service
 
-- Username / password authentication - form login <------ Current phase
+- Username / password authentication - form login
 - JWT
+- Oath2
 
 > Implementation phases are not final and could be changed
